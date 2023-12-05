@@ -17,7 +17,7 @@ class SqlDb {
     String databasepath = await getDatabasesPath();
     String path = join(databasepath, 'mo.db');
     Database mydb = await openDatabase(path,
-        onCreate: _onCreate, version: 1, onUpgrade: _onUpgrade);
+        onCreate: _onCreate, version: 2, onUpgrade: _onUpgrade);
     return mydb;
   }
 
@@ -29,12 +29,12 @@ class SqlDb {
   _onCreate(Database db, int version) async {
     Batch batch = db.batch();
     batch.execute('''
-      CREATE TABLE "notes" (
-        "id" INTEGER  NOT NULL PRIMARY KEY  AUTOINCREMENT, 
-        "note" TEXT NOT NULL
-        title TEXT NOT NULL
-        "color" TEXT
-  )
+      CREATE TABLE notes (
+    id INT PRIMARY KEY,
+    title VARCHAR(255),
+    note TEXT,
+    color VARCHAR(20)
+);
  ''');
     await batch.commit();
     print(" onCreate =====================================");

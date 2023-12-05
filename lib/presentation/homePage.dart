@@ -22,6 +22,7 @@ class _HomePageState extends State<HomePage> {
       setState(() {});
     }
   }
+
   @override
   void initState() {
     readData();
@@ -40,59 +41,69 @@ class _HomePageState extends State<HomePage> {
         },
         child: Icon(Icons.add),
       ),
-      body: isLoading ==true?
-        Center(child: Text("is loading...."),)
-        :Container(
-        child: ListView(
-          children: [
-            //MaterialButton(onPressed: ()async{
-            //await sqlDb.myDeleteDatabase();
-            //},
-            //child: Text('delete database'),
-            //),
-            ListView.builder(
-              itemCount: notes.length,
-              physics: NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemBuilder: (Context, i) {
-                return Card(
-                  child: ListTile(
-                    title: Text("${notes[i]['title']}"),
-                    subtitle: Text("${notes[i]['note']}"),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                          onPressed: () async {
-                            int response = await sqlDb.deleteData(
-                                "DEELETE FROM notes WHERE id= ${notes[i]['id']}");
-                            if (response > 0) {
-                              notes.removeWhere((element) => element['id'] == notes[i]['id']);
-                            }
-                          },
-                          icon: Icon(Icons.delete),
-                          color: Colors.red,
+      body: isLoading == true
+          ? Center(
+              child: Text("is loading...."),
+            )
+          : Container(
+              child: ListView(
+                children: [
+                  //MaterialButton(onPressed: ()async{
+                  //await sqlDb.myDeleteDatabase();
+                  //},
+                  //child: Text('delete database'),
+                  //),
+                  ListView.builder(
+                    itemCount: notes.length,
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemBuilder: (Context, i) {
+                      return Card(
+                        child: ListTile(
+                          title: Text("${notes[i]['title']}"),
+                          subtitle: Text("${notes[i]['note']}"),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                onPressed: () async {
+                                  int response = await sqlDb.deleteData(
+                                      "DELETE FROM notes WHERE id= ${notes[i]['id']}");
+                                  if (response > 0) {
+                                    notes.removeWhere((element) =>
+                                        element['id'] == notes[i]['id']);
+                                    setState(() {});
+                                  }
+                                },
+                                icon: Icon(Icons.delete),
+                                color: Colors.red,
+                              ),
+                              IconButton(
+                                  onPressed: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) => EditNotes(
+                                          color: notes[i]['color'],
+                                          note: notes[i]['note'],
+                                          title: notes[i]['title'],
+                                          id: notes[i]['id'],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  icon: Icon(
+                                    Icons.edit,
+                                    color: Colors.red,
+                                  ))
+                            ],
+                          ),
                         ),
-                        IconButton(onPressed: (){
-                          Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) => EditNotes(
-                              color: notes[i]['color'],
-                              note: notes[i]['noe'],
-                              title: notes[i]['title'],
-                              id: notes[i]['id'],
-
-                            ),)
-                          );
-                        }, icon: Icon(Icons.edit,color: Colors.red,))
-                      ],
-                    ),
+                      );
+                    },
                   ),
-                );
-              },
+                ],
+              ),
             ),
-          ],
-        ),
-      ),
     );
   }
 }

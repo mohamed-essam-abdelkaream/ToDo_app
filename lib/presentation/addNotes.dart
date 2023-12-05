@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_app/data/sqldb.dart';
+import 'package:todo_app/presentation/homePage.dart';
 import 'package:todo_app/widgets.dart';
 
 class AddNotes extends StatefulWidget {
-
   @override
   State<AddNotes> createState() => _AddNotesState();
 }
@@ -55,8 +55,12 @@ class _AddNotesState extends State<AddNotes> {
                         INSERT INTO notes(`note` , `title` , `color`)
                         VALUES("${note.text}", "${title.text}","${color.text}")
                         ''');
-                            if(response >0){
-                              Navigator.pop(context);
+                            if (response > 0) {
+                              Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(
+                                    builder: (context) => HomePage(),
+                                  ),
+                                  (route) => false);
                             }
                           })
                     ],

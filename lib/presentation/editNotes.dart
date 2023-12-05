@@ -10,7 +10,7 @@ class EditNotes extends StatefulWidget {
   late final title;
   late final color;
   late final id;
-  EditNotes({Key? key , this.note, this.title , this.color ,this.id}): super(key: key);
+  EditNotes({super.key , this.note, this.title , this.color ,this.id});
 
   @override
   State<EditNotes> createState() => _EditNotesState();
@@ -63,6 +63,7 @@ class _EditNotesState extends State<EditNotes> {
                     ),
                     defaultSizedBox(),
                     MaterialButton(
+                      color: Colors.blue,
                       onPressed: () async {
                         int response = await sqlDb.updateData('''
                         UPDATE notes SET 
